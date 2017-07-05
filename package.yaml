@@ -1,13 +1,13 @@
 name:                leitner
 version:             0.1.0.0
-#synopsis:
+synopsis:            Command line flashcard learning system based on the Leitner method
 #description:
-homepage:            https://github.com/githubuser/leitner#readme
-license:             BSD3
-author:              Author name here
-maintainer:          example@example.com
-copyright:           2017 Author name here
-category:            Web
+homepage:            https://github.com/noughtmare/leitner#readme
+license:             GPL-3
+author:              Jaro Reinders
+maintainer:          noughtmare@openmailbox.com
+copyright:           2017 Jaro Reinders
+category:            Learning
 extra-source-files:
 - README.md
 
