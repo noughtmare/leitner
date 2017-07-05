@@ -15,7 +15,6 @@ partitionM f (x:xs) = do
   b <- f x
   (if b then \(a,b) -> (a,x:b) else \(a,b) -> (x:a,b)) <$> partitionM f xs
 
-
 data Card = Card { question :: String, answer :: String }
 
 instance Show Card where
@@ -25,12 +24,10 @@ type Deck = [Card]
 
 session :: (Card -> IO Bool) -> Int -> [Deck] -> IO [Deck]
 session frontend sessionNumber boxes = do
-  res <- results
-  let ret = makeBoxes (res >>= \(a,b) -> [a,b])
-  return ret
+  result <- sequence $ map (\(n,deck) -> fmap ((1,) *** (n+1,)) $ partitionM frontend deck) toReview
+  return $ makeBoxes $ noReview ++ (result >>= \(a,b) -> [a,b])
   where
-    toReview = filter ((`divisibleBy` sessionNumber) . fst) $ zip [1..] boxes
-    results = sequence $ map (\(n,deck) -> fmap ((1,) *** (n+1,)) $ partitionM frontend deck) toReview
+    (toReview,noReview) = partition ((divisibleBy sessionNumber . (^2)) . fst) $ zip [1..] boxes
 
 makeBoxes :: [(Int,Deck)] -> [Deck]
 makeBoxes = makeBoxes' 1
